@@ -54,9 +54,10 @@ def pickle_load(file_name):
     fh.close
     return result
 
-file = "item_list.pkl"
+file = "./imput_data/item_list.pkl"
 item_data = pickle_load(file)
 item_list = item_data['item_name'].values()[0:101]
+
 print_text = """
     -----------------------------------
     -----------------------------------
@@ -76,9 +77,3 @@ def Scraiping_ImgList(item_list):
         count += 1
 
 Scraiping_ImgList(item_list)
-
-
-
-
-
-
