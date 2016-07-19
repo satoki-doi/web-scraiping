@@ -1,21 +1,24 @@
 #!/usr/bin/env python
 # coding: UTF-8
 
-import urllib, urllib2, sys
+import urllib
+import urllib2
+import sys
 from bs4 import BeautifulSoup
 import os.path
 import cPickle
 
-dir = "."
+dir = "../output_data"
 OPENER = urllib2.build_opener()
 OPENER.addheaders = [("User-Agent", "Mozilla/4.0")]
 base = 'https://www.google.co.jp/search?site=imghp&tbm=isch&tbs=itp:photo&source=hp&num=20&q='
+
 
 def SEARCH_WORD_GetHTML(que):
     """
     Google検索にアクセスする
     """
-    url = base +  urllib.quote( "\"%s\"" % que)
+    url = base +  urllib.quote( "\"%s\"" % que )
     html = OPENER.open( url ).read()
     soup = BeautifulSoup( html , "lxml")
 
@@ -54,10 +57,9 @@ def pickle_load(file_name):
     fh.close
     return result
 
-file = "./imput_data/item_list.pkl"
-item_data = pickle_load(file)
-item_list = item_data['item_name'].values()[0:101]
-
+file_name = "../input_data/item_list.pkl"
+item_data = pickle_load(file_name)
+item_list = item_data['item_name'].values()
 print_text = """
     -----------------------------------
     -----------------------------------
@@ -69,11 +71,15 @@ print_text = """
 def Scraiping_ImgList(item_list):
     count = 0
     for item in item_list:
-        dir_name = item + "[%s]"  % count + "code1"
+        dir_name = item + "[%s]" % count 
         print print_text % dir_name
         os.mkdir(dir_name)
         soup = SEARCH_WORD_GetHTML(item)
         Get_imgURL(soup, dir_name)
+
+        stop_time = poisson(lam=6) + 1
+        time.sleep(stop_time)
+        print "waiting %s seconds" % stop_time
         count += 1
 
 Scraiping_ImgList(item_list)
